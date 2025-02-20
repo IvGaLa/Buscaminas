@@ -1,0 +1,19 @@
+public enum prefabsCellsNamesTypes
+{
+  _0,
+  _1,
+  _2,
+  _3,
+  _4,
+  _5,
+  _6,
+  _7,
+  _8,
+  BOMB_1,
+  BOMB_2,
+  BOMB_3,
+  FLAG,
+  QUESTION_1,
+  QUESTION_2,
+  UNREVEALED
+}
