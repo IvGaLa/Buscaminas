@@ -26,15 +26,15 @@ public class GameManager : MonoBehaviour
         float offsetX = -_width / 2.0f;
         float offsetY = -_height / 2.0f;
 
-        // Cargamos la celda por defecto (unrevealed)
-        GameObject _cell = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(configTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(configTypes.PREFAB_CELL));
+        // Cargamos el prefab de la celda por defecto (unrevealed)
+        GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(configTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(configTypes.PREFAB_CELL));
 
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)
             {
                 Vector3 position = new(x + offsetX, y + offsetY, 0);
-                GameObject cell = Instantiate(_cell, position, Quaternion.identity);
+                GameObject cell = Instantiate(_cellPrefab, position, Quaternion.identity);
                 Cell cellScript = cell.GetComponent<Cell>();
                 cellScript.Position = position;
                 cellScript.HasBomb = _grid[x, y] == _bomb;

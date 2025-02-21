@@ -13,6 +13,7 @@ public static class ConfigVariables
         { configTypes.PREFABS_CELLS_PATH, new ConfigValue<string>("Prefabs/") },
         { configTypes.SPRITES_PATH, new ConfigValue<string>("Sprites/") },
         { configTypes.PREFAB_CELL, new ConfigValue<string>("cell") },
+        { configTypes.TILESET_NAME, new ConfigValue<string>("minesweeper") },
         // { configTypes.MUSIC_ENABLED, new ConfigValue<bool>(true) },
         // { configTypes.VOLUME_LEVEL, new ConfigValue<int>(80) }
     };

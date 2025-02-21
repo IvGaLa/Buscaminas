@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-
-    Vector3 _position; // Posición en el grid
-    bool _hasBomb;        // Si es una bomba
-    int _adjacentBombs;   // Bombas cercanas
-    bool _isRevealed;     // Si la celda fue revelada
+    spritesNamesTypes _newSprite;
+    Vector3 _position;      // Posición en el grid
+    bool _hasBomb;          // Si es una bomba
+    int _adjacentBombs;     // Bombas cercanas
+    bool _isRevealed;       // Si la celda fue revelada
 
     // Setters/Getters
     public Vector3 Position { get => _position; set => _position = value; }
@@ -39,11 +39,11 @@ public class Cell : MonoBehaviour
         // cercanas o dejar la celda vacía.
         if (_hasBomb)
         {
-            Debug.Log("¡¡¡BOOM!!!");
+            _newSprite = spritesNamesTypes.BOMB_1;
         }
         else
         {
-            Debug.Log("¡¡¡NO BOOM!!!");
+            _newSprite = spritesNamesTypes._0;
         }
     }
 
@@ -52,6 +52,12 @@ public class Cell : MonoBehaviour
         if (!_isRevealed)
         {
             Reveal();
+            ChangeSprite(_newSprite);
         }
+    }
+
+    void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
+    {
+        GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
     }
 }
