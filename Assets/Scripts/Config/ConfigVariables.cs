@@ -6,7 +6,8 @@ public static class ConfigVariables
   {
     Dictionary<configTypes, string> _config = new(){
       {configTypes.PREFABS_CELLS_PATH, "Prefabs/Cells/"},
-      {configTypes.SPRITES_PATH, "Sprites/"}
+      {configTypes.SPRITES_PATH, "Sprites/"},
+      {configTypes.UNREVEALED_CELL, "unrevealed"}
     };
 
     return _config;

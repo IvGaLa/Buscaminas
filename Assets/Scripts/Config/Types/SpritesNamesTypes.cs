@@ -1,4 +1,4 @@
-public enum prefabsCellsNamesTypes
+public enum spritesNamesTypes
 {
   _0,
   _1,

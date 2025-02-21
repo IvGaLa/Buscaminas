@@ -1,42 +1,45 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     int _width, _height, _bombs, _camSize;
     int _bomb = -1; // Guardará si tiene bomba (-1) o el número de bombas alrededor (entre 0 y 8)
     int[,] _grid;
-    GameObject _unrevealed;
 
     void Awake()
     {
-        _unrevealed = PrefabsCells.GetPrefabsCells()[prefabsCellsNamesTypes.UNREVEALED];
-        GetDifficulty();
+        GetGameSettings();
         InitializeGrid();
         SetCamSize();
         ShowGrid();
     }
 
+
     void SetCamSize()
     {
-        Debug.Log(Camera.main.orthographicSize);
-        Debug.Log(_camSize);
         Camera.main.orthographicSize = _camSize;
-        Debug.Log(Camera.main.orthographicSize);
     }
 
     void ShowGrid()
     {
+        // Añadimos un "offset" para centrar las casillas
+        float offsetX = -_width / 2.0f;
+        float offsetY = -_height / 2.0f;
 
-        float offsetX = -_width / 2.0f + 0.5f;
-        float offsetY = -_height / 2.0f + 0.5f;
+        // Cargamos la celda por defecto (unrevealed)
+        string _prefabsPath = ConfigVariables.GetConfigVariables()[configTypes.PREFABS_CELLS_PATH];
+        string _unrevealedCell = ConfigVariables.GetConfigVariables()[configTypes.UNREVEALED_CELL];
+        GameObject _unrevealed = Resources.Load<GameObject>($"{_prefabsPath}{_unrevealedCell}");
 
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)
             {
-                Vector3 position = new Vector3(x + offsetX, y + offsetY, 0);
-                Instantiate(_unrevealed, new Vector3(position.x, position.y, 0), Quaternion.identity);
+                Vector3 position = new(x + offsetX, y + offsetY, 0);
+                GameObject cell = Instantiate(_unrevealed, position, Quaternion.identity);
+                Cell cellScript = cell.GetComponent<Cell>();
+                cellScript.Position = position;
+                cellScript.HasBomb = _grid[x, y] == _bomb;
             }
         }
     }
@@ -57,10 +60,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void GetDifficulty()
+    void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
     {
-        Dictionary<difficultyTypes, (int width, int height, int bombs, int camSize)> gameSettings = GameSettings.GetGameSettings();
-        difficultyTypes randomDifficulty = (difficultyTypes)Random.Range(0, gameSettings.Count);
-        (_width, _height, _bombs, _camSize) = gameSettings[randomDifficulty];
+        (_width, _height, _bombs, _camSize) = GameSettings.GetGameSettings()[difficulty];
     }
 }
