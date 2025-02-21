@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    int _width, _height, _bombs, _camSize;
-    readonly int _bomb = -1; // Guardará si tiene bomba (-1) o el número de bombas alrededor (entre 0 y 8)
-    int[,] _grid;
+    static int _width, _height, _bombs, _camSize;
+    static readonly int _bomb = -1; // Guardará si tiene bomba (-1) o el número de bombas alrededor (entre 0 y 8)
+    static int[,] _grid;
+    static float _offsetX, _offsetY;
 
     void Awake()
     {
@@ -22,10 +23,6 @@ public class GameManager : MonoBehaviour
 
     void ShowGrid()
     {
-        // Añadimos un "offset" para centrar las casillas
-        float offsetX = -_width / 2.0f;
-        float offsetY = -_height / 2.0f;
-
         // Cargamos el prefab de la celda por defecto (unrevealed)
         GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(configTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(configTypes.PREFAB_CELL));
 
@@ -33,17 +30,23 @@ public class GameManager : MonoBehaviour
         {
             for (int x = 0; x < _width; x++)
             {
-                Vector3 position = new(x + offsetX, y + offsetY, 0);
+                Vector3 position = new(x + _offsetX, y + _offsetY, 0);
                 GameObject cell = Instantiate(_cellPrefab, position, Quaternion.identity);
                 Cell cellScript = cell.GetComponent<Cell>();
                 cellScript.Position = position;
                 cellScript.HasBomb = _grid[x, y] == _bomb;
+                cellScript.GridPositionX = x;
+                cellScript.GridPositionY = y;
             }
         }
     }
 
     void InitializeGrid()
     {
+        // Añadimos un "offset" para centrar las casillas
+        _offsetX = -_width / 2.0f;
+        _offsetY = -_height / 2.0f;
+
         _grid = new int[_width, _height];
         int bombsPlaced = 0;
         while (bombsPlaced < _bombs)
@@ -61,5 +64,15 @@ public class GameManager : MonoBehaviour
     void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
     {
         (_width, _height, _bombs, _camSize) = GameSettings.GetGameSettings()[difficulty];
+    }
+
+    static public bool CheckHasBomb(Vector3 pos)
+    {
+        int x = (int)pos.x;
+        int y = (int)pos.y;
+        if (x < 0 || x >= _width || y < 0 || y >= _height)
+            return false;
+
+        return _grid[x, y] == _bomb;
     }
 }
