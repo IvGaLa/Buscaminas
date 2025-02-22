@@ -4,9 +4,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     static int _width, _height, _bombs, _camSize;
-    static readonly int _bomb = -1; // Guardará si tiene bomba (-1) o el número de bombas alrededor (entre 0 y 8)
+    static readonly int BOMB = -1; // Guardará si tiene bomba (-1)
     static int[,] _grid;
-    static float _offsetX, _offsetY;
     static int _totalRevealed, _cellsRevealed;
 
     void Awake()
@@ -20,7 +19,11 @@ public class GameManager : MonoBehaviour
 
     void SetCamSize()
     {
+        // Ajustamos el tamaño de la cámara en función del tamaño de la cuadrícula
         Camera.main.orthographicSize = _camSize;
+
+        // Centramos la cámara en relación al tamaño de la cuadrícula
+        Camera.main.transform.position = new Vector3(_width / 2f, _height / 2f, -10);
     }
 
     void ShowGrid()
@@ -32,13 +35,13 @@ public class GameManager : MonoBehaviour
         {
             for (int x = 0; x < _width; x++)
             {
-                Vector3 position = new(x + _offsetX, y + _offsetY, 0);
+                Vector3 position = new(x, y, 0);
                 GameObject cell = Instantiate(_cellPrefab, position, Quaternion.identity);
                 Cell cellScript = cell.GetComponent<Cell>();
 
                 CellData cellData = new CellData();
                 cellData.Position = position;
-                cellData.HasBomb = _grid[x, y] == _bomb;
+                cellData.HasBomb = _grid[x, y] == BOMB;
                 cellData.GridPositionX = x;
                 cellData.GridPositionY = y;
                 cellScript.InitializeCellData(cellData);
@@ -49,19 +52,15 @@ public class GameManager : MonoBehaviour
 
     void InitializeGrid()
     {
-        // Añadimos un "offset" para centrar las casillas
-        _offsetX = -_width / 2.0f;
-        _offsetY = -_height / 2.0f;
-
         _grid = new int[_width, _height];
         int bombsPlaced = 0;
         while (bombsPlaced < _bombs)
         {
             int x = Random.Range(0, _width);
             int y = Random.Range(0, _height);
-            if (_grid[x, y] != _bomb)
+            if (_grid[x, y] != BOMB)
             {
-                _grid[x, y] = _bomb;
+                _grid[x, y] = BOMB;
                 bombsPlaced++;
             }
         }
@@ -76,7 +75,7 @@ public class GameManager : MonoBehaviour
 
     static public bool CheckHasBomb(int x, int y)
     {
-        return CheckInBounds(x, y) && _grid[x, y] == _bomb;
+        return CheckInBounds(x, y) && _grid[x, y] == BOMB;
     }
 
     static bool CheckInBounds(int x, int y)
