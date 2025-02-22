@@ -41,10 +41,8 @@ public class GameManager : MonoBehaviour
 
                 CellData cellData = new()
                 {
-                    //cellData.Position = position;
                     HasBomb = _grid[x, y] == BOMB,
-                    GridPositionX = x,
-                    GridPositionY = y
+                    Position = new Vector2Int(x, y),
                 };
 
                 cellScript.InitializeCellData(cellData);

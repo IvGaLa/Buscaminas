@@ -10,7 +10,7 @@ public class Cell : MonoBehaviour
   }
 
   // Método para revelar la celda
-  void Reveal(int x, int y)
+  void Reveal(Vector2Int position)
   {
 
     // Si ya está revelada, no hacer nada
@@ -18,6 +18,8 @@ public class Cell : MonoBehaviour
 
     _cellData.IsRevealed = true;
     GameManager.AddCellRevealed();
+    int x = position.x;
+    int y = position.y;
     int countBombs = CountBombs(x, y);
 
     if (countBombs == 0)
@@ -31,7 +33,7 @@ public class Cell : MonoBehaviour
 
         if (!GameManager.CheckHasBomb(nx, ny))
         {
-          Reveal(nx, ny);
+          Reveal(new Vector2Int(nx, ny));
         }
       }
     }
@@ -62,7 +64,7 @@ public class Cell : MonoBehaviour
       GameManager.GameOver();
     }
 
-    Reveal(_cellData.GridPositionX, _cellData.GridPositionY);
+    Reveal(_cellData.Position);
   }
 
   void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
