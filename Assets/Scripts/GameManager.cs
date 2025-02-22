@@ -39,11 +39,14 @@ public class GameManager : MonoBehaviour
                 GameObject cell = Instantiate(_cellPrefab, position, Quaternion.identity);
                 Cell cellScript = cell.GetComponent<Cell>();
 
-                CellData cellData = new CellData();
-                cellData.Position = position;
-                cellData.HasBomb = _grid[x, y] == BOMB;
-                cellData.GridPositionX = x;
-                cellData.GridPositionY = y;
+                CellData cellData = new()
+                {
+                    //cellData.Position = position;
+                    HasBomb = _grid[x, y] == BOMB,
+                    GridPositionX = x,
+                    GridPositionY = y
+                };
+
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
             }
@@ -94,12 +97,14 @@ public class GameManager : MonoBehaviour
     {
         if (_cellsRevealed == _totalRevealed)
         {
-            SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
+            Debug.Log("You win");
+            //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
         }
     }
 
     public static void GameOver()
     {
-        SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
+        Debug.Log("Game Over");
+        //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
     }
 }
