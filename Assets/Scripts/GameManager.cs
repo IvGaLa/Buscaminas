@@ -35,10 +35,13 @@ public class GameManager : MonoBehaviour
                 Vector3 position = new(x + _offsetX, y + _offsetY, 0);
                 GameObject cell = Instantiate(_cellPrefab, position, Quaternion.identity);
                 Cell cellScript = cell.GetComponent<Cell>();
-                cellScript.Position = position;
-                cellScript.HasBomb = _grid[x, y] == _bomb;
-                cellScript.GridPositionX = x;
-                cellScript.GridPositionY = y;
+
+                CellData cellData = new CellData();
+                cellData.Position = position;
+                cellData.HasBomb = _grid[x, y] == _bomb;
+                cellData.GridPositionX = x;
+                cellData.GridPositionY = y;
+                cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
             }
         }

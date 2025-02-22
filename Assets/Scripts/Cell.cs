@@ -2,30 +2,21 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-  spritesNamesTypes _newSprite;
-  Vector3 _position;      // Posición en el grid
-  bool _hasBomb;          // Si es una bomba
-  int _adjacentBombs;     // Bombas cercanas
-  bool _isRevealed;       // Si la celda fue revelada
-  int _gridPositionX;   // Posición en el grid
-  int _gridPositionY;   // Posición en el grid
+  CellData _cellData;
 
-  // Setters/Getters
-  public Vector3 Position { get => _position; set => _position = value; }
-  public bool HasBomb { get => _hasBomb; set => _hasBomb = value; }
-  public int AdjacentBombs { get => _adjacentBombs; set => _adjacentBombs = value; }
-  public bool IsRevealed { get => _isRevealed; set => _isRevealed = value; }
-  public int GridPositionX { get => _gridPositionX; set => _gridPositionX = value; }
-  public int GridPositionY { get => _gridPositionY; set => _gridPositionY = value; }
+  public void InitializeCellData(CellData cellData)
+  {
+    _cellData = cellData;
+  }
 
   // Método para revelar la celda
   void Reveal(int x, int y)
   {
 
     // Si ya está revelada, no hacer nada
-    if (_isRevealed) return;
+    if (_cellData.IsRevealed) return;
 
-    IsRevealed = true;
+    _cellData.IsRevealed = true;
     GameManager.AddCellRevealed();
     int countBombs = CountBombs(x, y);
 
@@ -65,13 +56,13 @@ public class Cell : MonoBehaviour
 
   void OnMouseDown()
   {
-    if (HasBomb)
+    if (_cellData.HasBomb)
     {
       ChangeSprite(spritesNamesTypes.BOMB_1);
       GameManager.GameOver();
     }
 
-    Reveal(GridPositionX, GridPositionY);
+    Reveal(_cellData.GridPositionX, _cellData.GridPositionY);
   }
 
   void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
