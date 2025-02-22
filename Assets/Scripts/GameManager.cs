@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class GameManager : MonoBehaviour
     static readonly int _bomb = -1; // Guardará si tiene bomba (-1) o el número de bombas alrededor (entre 0 y 8)
     static int[,] _grid;
     static float _offsetX, _offsetY;
+    static int _totalRevealed, _cellsRevealed;
 
     void Awake()
     {
@@ -37,6 +39,7 @@ public class GameManager : MonoBehaviour
                 cellScript.HasBomb = _grid[x, y] == _bomb;
                 cellScript.GridPositionX = x;
                 cellScript.GridPositionY = y;
+                cell.name = $"{x}-{y}";
             }
         }
     }
@@ -64,15 +67,37 @@ public class GameManager : MonoBehaviour
     void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
     {
         (_width, _height, _bombs, _camSize) = GameSettings.GetGameSettings()[difficulty];
+        _totalRevealed = _width * _height - _bombs;
+        _cellsRevealed = 0;
     }
 
-    static public bool CheckHasBomb(Vector3 pos)
+    static public bool CheckHasBomb(int x, int y)
     {
-        int x = (int)pos.x;
-        int y = (int)pos.y;
-        if (x < 0 || x >= _width || y < 0 || y >= _height)
-            return false;
+        return CheckInBounds(x, y) && _grid[x, y] == _bomb;
+    }
 
-        return _grid[x, y] == _bomb;
+    static bool CheckInBounds(int x, int y)
+    {
+        return x >= 0 && x < _width && y >= 0 && y < _height;
+    }
+
+    public static void AddCellRevealed()
+    {
+        _cellsRevealed++;
+        CheckWin();
+    }
+
+
+    static void CheckWin()
+    {
+        if (_cellsRevealed == _totalRevealed)
+        {
+            SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
+        }
+    }
+
+    public static void GameOver()
+    {
+        SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
     }
 }

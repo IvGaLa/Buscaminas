@@ -2,62 +2,80 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
-    spritesNamesTypes _newSprite;
-    Vector3 _position;      // Posición en el grid
-    bool _hasBomb;          // Si es una bomba
-    int _adjacentBombs;     // Bombas cercanas
-    bool _isRevealed;       // Si la celda fue revelada
-    int _gridPositionX;   // Posición en el grid
-    int _gridPositionY;   // Posición en el grid
+  spritesNamesTypes _newSprite;
+  Vector3 _position;      // Posición en el grid
+  bool _hasBomb;          // Si es una bomba
+  int _adjacentBombs;     // Bombas cercanas
+  bool _isRevealed;       // Si la celda fue revelada
+  int _gridPositionX;   // Posición en el grid
+  int _gridPositionY;   // Posición en el grid
 
-    // Setters/Getters
-    public Vector3 Position { get => _position; set => _position = value; }
-    public bool HasBomb { get => _hasBomb; set => _hasBomb = value; }
-    public int AdjacentBombs { get => _adjacentBombs; set => _adjacentBombs = value; }
-    public bool IsRevealed { get => _isRevealed; set => _isRevealed = value; }
-    public int GridPositionX { get => _gridPositionX; set => _gridPositionX = value; }
-    public int GridPositionY { get => _gridPositionY; set => _gridPositionY = value; }
+  // Setters/Getters
+  public Vector3 Position { get => _position; set => _position = value; }
+  public bool HasBomb { get => _hasBomb; set => _hasBomb = value; }
+  public int AdjacentBombs { get => _adjacentBombs; set => _adjacentBombs = value; }
+  public bool IsRevealed { get => _isRevealed; set => _isRevealed = value; }
+  public int GridPositionX { get => _gridPositionX; set => _gridPositionX = value; }
+  public int GridPositionY { get => _gridPositionY; set => _gridPositionY = value; }
 
-    // Método para revelar la celda
-    void Reveal()
+  // Método para revelar la celda
+  void Reveal(int x, int y)
+  {
+
+    // Si ya está revelada, no hacer nada
+    if (_isRevealed) return;
+
+    IsRevealed = true;
+    GameManager.AddCellRevealed();
+    int countBombs = CountBombs(x, y);
+
+    if (countBombs == 0)
     {
-        _isRevealed = true;
-        if (_hasBomb)
+      foreach (var direction in Directions.GetDirections())
+      {
+        int dx = direction.Value.x;
+        int dy = direction.Value.y;
+        int nx = x + dx;
+        int ny = y + dy;
+
+        if (!GameManager.CheckHasBomb(nx, ny))
         {
-            // TO-DO: Gestionar Game over
-            _newSprite = spritesNamesTypes.BOMB_1;
+          Reveal(nx, ny);
         }
-        else
-        {
-            // TO-DO: Revelar celdas adyacentes
-            _newSprite = BombNumbers.GetBombNumbers()[CheckAdjacentBombs()];
-        }
+      }
     }
 
-    int CheckAdjacentBombs()
-    {
-        int bombs = 0;
-        foreach (var direction in Directions.GetDirections())
-        {
-            Vector3 newPosition = new(_gridPositionX + direction.Value.x, _gridPositionY + direction.Value.y);
-            if (GameManager.CheckHasBomb(newPosition))
-                bombs++;
-        }
+    ChangeSprite((spritesNamesTypes)countBombs);
+  }
 
-        return bombs;
+  int CountBombs(int x, int y)
+  {
+    int bombs = 0;
+    foreach (var direction in Directions.GetDirections())
+    {
+      int nx = x + direction.Value.x;
+      int ny = y + direction.Value.y;
+      if (GameManager.CheckHasBomb(nx, ny))
+        bombs++;
     }
 
-    void OnMouseDown()
+    return bombs;
+  }
+
+
+  void OnMouseDown()
+  {
+    if (HasBomb)
     {
-        if (!_isRevealed)
-        {
-            Reveal();
-            ChangeSprite(_newSprite);
-        }
+      ChangeSprite(spritesNamesTypes.BOMB_1);
+      GameManager.GameOver();
     }
 
-    void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
-    {
-        GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
-    }
+    Reveal(GridPositionX, GridPositionY);
+  }
+
+  void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
+  {
+    GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
+  }
 }
