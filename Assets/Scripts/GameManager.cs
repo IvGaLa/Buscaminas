@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
                 CellData cellData = new()
                 {
                     HasBomb = _grid[x, y] == BOMB,
+                    HasFlag = false,
                     Position = new Vector2Int(x, y),
                 };
 

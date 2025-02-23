@@ -12,10 +12,6 @@ public class Cell : MonoBehaviour
   // Método para revelar la celda
   void Reveal(Vector2Int position)
   {
-
-    // Si ya está revelada, no hacer nada
-    if (_cellData.IsRevealed) return;
-
     _cellData.IsRevealed = true;
     GameManager.AddCellRevealed();
     int x = position.x;
@@ -56,15 +52,37 @@ public class Cell : MonoBehaviour
   }
 
 
-  void OnMouseDown()
+  void ToggleFlag()
   {
-    if (_cellData.HasBomb)
-    {
-      ChangeSprite(spritesNamesTypes.BOMB_1);
-      GameManager.GameOver();
-    }
+    _cellData.HasFlag = !_cellData.HasFlag;
+    spritesNamesTypes _newSprite = (_cellData.HasFlag) ? spritesNamesTypes.FLAG : spritesNamesTypes.UNREVEALED;
+    ChangeSprite(_newSprite);
+  }
 
-    Reveal(_cellData.Position);
+  //void OnMouseDown()
+  void OnMouseOver()
+  {
+    // Si ya está revelada, no hacer nada
+    if (_cellData.IsRevealed) return;
+
+    if (Input.GetMouseButtonDown(1)) // Right click
+    {
+      Debug.Log($"Right click: FLAG - {_cellData.HasFlag}");
+      ToggleFlag();
+    }
+    else if (Input.GetMouseButtonDown(0)) // Left click
+    {
+      if (_cellData.HasFlag) return;
+      if (_cellData.HasBomb)
+      {
+        ChangeSprite(spritesNamesTypes.BOMB_1);
+        GameManager.GameOver();
+      }
+      else
+      {
+        Reveal(_cellData.Position);
+      }
+    }
   }
 
   void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
