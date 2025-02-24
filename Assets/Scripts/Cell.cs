@@ -3,6 +3,7 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
   CellData _cellData;
+  public CellData CellData { get => _cellData; set => _cellData = value; }
 
   public void InitializeCellData(CellData cellData)
   {
@@ -12,32 +13,34 @@ public class Cell : MonoBehaviour
   // Método para revelar la celda
   void Reveal(Vector2Int position)
   {
-    _cellData.IsRevealed = true;
-    GameManager.Instance.AddCellRevealed();
-    int x = position.x;
-    int y = position.y;
-    int countBombs = CountBombs(x, y);
+    GameManager.Instance.RevealCell(this);
 
-    if (countBombs == 0)
-    {
-      foreach (var direction in Directions.GetDirections())
-      {
-        int dx = direction.Value.x;
-        int dy = direction.Value.y;
-        int nx = x + dx;
-        int ny = y + dy;
+    // _cellData.IsRevealed = true;
+    // GameManager.Instance.AddCellRevealed();
+    // int x = position.x;
+    // int y = position.y;
+    // int countBombs = CountBombs(x, y);
 
-        if (!GameManager.Instance.CheckHasBomb(nx, ny))
-        {
-          Reveal(new Vector2Int(nx, ny));
-        }
-      }
-    }
+    // if (countBombs == 0)
+    // {
+    //   foreach (var direction in Directions.GetDirections())
+    //   {
+    //     int dx = direction.Value.x;
+    //     int dy = direction.Value.y;
+    //     int nx = x + dx;
+    //     int ny = y + dy;
 
-    ChangeSprite((spritesNamesTypes)countBombs);
+    //     if (!GameManager.Instance.CheckHasBomb(nx, ny))
+    //     {
+    //       Reveal(new Vector2Int(nx, ny));
+    //     }
+    //   }
+    // }
+
+    // ChangeSprite((spritesNamesTypes)countBombs);
   }
 
-  int CountBombs(int x, int y)
+  public int CountBombs(int x, int y)
   {
     int bombs = 0;
     foreach (var direction in Directions.GetDirections())
@@ -85,7 +88,7 @@ public class Cell : MonoBehaviour
     }
   }
 
-  void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
+  public void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
   {
     GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
   }

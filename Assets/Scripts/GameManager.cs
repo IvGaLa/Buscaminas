@@ -1,10 +1,13 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    int _width, _height, _bombs, _camSize;
+    readonly int DELAY_WIN = 5;
+    readonly int DELAY_LOSE = 10;
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
+    int _width, _height, _bombs, _camSize;
     int[,] _grid;
     int _totalRevealed, _cellsRevealed;
     public static GameManager Instance { get; private set; }
@@ -20,12 +23,25 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject); // Destruimos el objeto si ya existe
         }
+        StartCoroutine(ResetGame());
+    }
+
+    IEnumerator ResetGame(float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
+        DestroyAllCells();
         GetGameSettings();
         InitializeGrid();
         SetCamSize();
         ShowGrid();
     }
 
+    void DestroyAllCells()
+    {
+        GameObject[] cells = GameObject.FindGameObjectsWithTag(Tags.GetTagName()[tagsTypes.CELL]);
+        foreach (var cell in cells)
+            Destroy(cell);
+    }
 
     void SetCamSize()
     {
@@ -58,6 +74,7 @@ public class GameManager : MonoBehaviour
 
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
+                cell.tag = Tags.GetTagName()[tagsTypes.CELL];
             }
         }
     }
@@ -108,6 +125,7 @@ public class GameManager : MonoBehaviour
         if (_cellsRevealed == _totalRevealed)
         {
             Debug.Log("You win");
+            StartCoroutine(ResetGame(DELAY_WIN));
             //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
         }
     }
@@ -115,6 +133,35 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("Game Over");
+        StartCoroutine(ResetGame(DELAY_LOSE));
         //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
+    }
+
+    public void RevealCell(Cell cell)
+    {
+        cell.CellData.IsRevealed = true;
+        AddCellRevealed();
+        int x = cell.CellData.Position.x;
+        int y = cell.CellData.Position.y;
+        int countBombs = cell.CountBombs(x, y);
+
+        cell.ChangeSprite((spritesNamesTypes)countBombs);
+
+        if (countBombs > 0)
+            return;
+
+        foreach (var direction in Directions.GetDirections())
+        {
+            int dx = direction.Value.x;
+            int dy = direction.Value.y;
+            int nx = x + dx;
+            int ny = y + dy;
+            if (!CheckHasBomb(nx, ny))
+            {
+                GameObject newCell = GameObject.Find($"{nx}-{ny}");
+                Cell newCellScript = newCell.GetComponent<Cell>();
+                RevealCell(newCellScript);
+            }
+        }
     }
 }

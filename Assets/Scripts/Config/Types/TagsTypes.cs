@@ -1,0 +1,12 @@
+public enum tagsTypes
+{
+  UNTAGGED,
+  RESPAWN,
+  FINISH,
+  EDITORONLY,
+  MAINCAMERA,
+  PLAYER,
+  GAMECONTROLLER,
+  CELL,
+
+}
