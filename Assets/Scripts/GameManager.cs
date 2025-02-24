@@ -80,7 +80,8 @@ public class GameManager : MonoBehaviour
 
     void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
     {
-        (_width, _height, _bombs, _camSize) = GameSettings.GetGameSettings()[difficulty];
+        (_width, _height, _bombs) = GameSettings.GetGameSettings()[difficulty];
+        _camSize = (Mathf.Max(_width, _height) / 2) + 1;
         _totalRevealed = _width * _height - _bombs;
         _cellsRevealed = 0;
     }
