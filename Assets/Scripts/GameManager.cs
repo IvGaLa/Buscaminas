@@ -3,13 +3,23 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    static int _width, _height, _bombs, _camSize;
-    static readonly int BOMB = -1; // Guardará si tiene bomba (-1)
-    static int[,] _grid;
-    static int _totalRevealed, _cellsRevealed;
+    int _width, _height, _bombs, _camSize;
+    readonly int BOMB = -1; // Guardará si tiene bomba (-1)
+    int[,] _grid;
+    int _totalRevealed, _cellsRevealed;
+    public static GameManager Instance { get; private set; }
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Mantenemos el objeto en todas las escenas
+        }
+        else
+        {
+            Destroy(gameObject); // Destruimos el objeto si ya existe
+        }
         GetGameSettings();
         InitializeGrid();
         SetCamSize();
@@ -75,24 +85,24 @@ public class GameManager : MonoBehaviour
         _cellsRevealed = 0;
     }
 
-    static public bool CheckHasBomb(int x, int y)
+    public bool CheckHasBomb(int x, int y)
     {
         return CheckInBounds(x, y) && _grid[x, y] == BOMB;
     }
 
-    static bool CheckInBounds(int x, int y)
+    bool CheckInBounds(int x, int y)
     {
         return x >= 0 && x < _width && y >= 0 && y < _height;
     }
 
-    public static void AddCellRevealed()
+    public void AddCellRevealed()
     {
         _cellsRevealed++;
         CheckWin();
     }
 
 
-    static void CheckWin()
+    void CheckWin()
     {
         if (_cellsRevealed == _totalRevealed)
         {
@@ -101,7 +111,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void GameOver()
+    public void GameOver()
     {
         Debug.Log("Game Over");
         //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);

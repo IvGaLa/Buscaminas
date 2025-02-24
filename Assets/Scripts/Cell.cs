@@ -13,7 +13,7 @@ public class Cell : MonoBehaviour
   void Reveal(Vector2Int position)
   {
     _cellData.IsRevealed = true;
-    GameManager.AddCellRevealed();
+    GameManager.Instance.AddCellRevealed();
     int x = position.x;
     int y = position.y;
     int countBombs = CountBombs(x, y);
@@ -27,7 +27,7 @@ public class Cell : MonoBehaviour
         int nx = x + dx;
         int ny = y + dy;
 
-        if (!GameManager.CheckHasBomb(nx, ny))
+        if (!GameManager.Instance.CheckHasBomb(nx, ny))
         {
           Reveal(new Vector2Int(nx, ny));
         }
@@ -44,7 +44,7 @@ public class Cell : MonoBehaviour
     {
       int nx = x + direction.Value.x;
       int ny = y + direction.Value.y;
-      if (GameManager.CheckHasBomb(nx, ny))
+      if (GameManager.Instance.CheckHasBomb(nx, ny))
         bombs++;
     }
 
@@ -76,7 +76,7 @@ public class Cell : MonoBehaviour
       if (_cellData.HasBomb)
       {
         ChangeSprite(spritesNamesTypes.BOMB_1);
-        GameManager.GameOver();
+        GameManager.Instance.GameOver();
         return;
       }
 
