@@ -67,21 +67,21 @@ public class Cell : MonoBehaviour
 
     if (Input.GetMouseButtonDown(1)) // Right click
     {
-      Debug.Log($"Right click: FLAG - {_cellData.HasFlag}");
       ToggleFlag();
     }
     else if (Input.GetMouseButtonDown(0)) // Left click
     {
       if (_cellData.HasFlag) return;
+
       if (_cellData.HasBomb)
       {
         ChangeSprite(spritesNamesTypes.BOMB_1);
         GameManager.GameOver();
+        return;
       }
-      else
-      {
-        Reveal(_cellData.Position);
-      }
+
+      Reveal(_cellData.Position);
+
     }
   }
 
