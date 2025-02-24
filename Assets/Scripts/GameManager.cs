@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
     int _width, _height, _bombs, _camSize;
     int[,] _grid;
     int _totalRevealed, _cellsRevealed;
+    bool _playing;
     public static GameManager Instance { get; private set; }
+    public bool Playing => _playing;
+    [SerializeField] GameObject cells;
 
     void Awake()
     {
@@ -28,18 +31,20 @@ public class GameManager : MonoBehaviour
 
     IEnumerator ResetGame(float delay = 0)
     {
+        _playing = false;
         yield return new WaitForSeconds(delay);
         DestroyAllCells();
         GetGameSettings();
         InitializeGrid();
         SetCamSize();
         ShowGrid();
+        _playing = true;
     }
 
     void DestroyAllCells()
     {
-        GameObject[] cells = GameObject.FindGameObjectsWithTag(Tags.GetTagName()[tagsTypes.CELL]);
-        foreach (var cell in cells)
+        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName()[tagsTypes.CELL]);
+        foreach (var cell in allCells)
             Destroy(cell);
     }
 
@@ -75,6 +80,7 @@ public class GameManager : MonoBehaviour
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
                 cell.tag = Tags.GetTagName()[tagsTypes.CELL];
+                cell.transform.SetParent(cells.transform);
             }
         }
     }
@@ -103,15 +109,9 @@ public class GameManager : MonoBehaviour
         _cellsRevealed = 0;
     }
 
-    public bool CheckHasBomb(int x, int y)
-    {
-        return CheckInBounds(x, y) && _grid[x, y] == BOMB;
-    }
+    public bool CheckHasBomb(int x, int y) => CheckInBounds(x, y) && _grid[x, y] == BOMB;
 
-    bool CheckInBounds(int x, int y)
-    {
-        return x >= 0 && x < _width && y >= 0 && y < _height;
-    }
+    bool CheckInBounds(int x, int y) => x >= 0 && x < _width && y >= 0 && y < _height;
 
     public void AddCellRevealed()
     {

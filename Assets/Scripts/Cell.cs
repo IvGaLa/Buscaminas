@@ -65,6 +65,8 @@ public class Cell : MonoBehaviour
   //void OnMouseDown()
   void OnMouseOver()
   {
+    if (!GameManager.Instance.Playing) return;
+
     // Si ya está revelada, no hacer nada
     if (_cellData.IsRevealed) return;
 
