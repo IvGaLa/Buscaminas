@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public bool Playing => _playing;
-    GameObject cells; // GameObject padre de todas las celdas.
     void Awake()
     {
         if (Instance == null)
@@ -31,27 +30,6 @@ public class GameManager : MonoBehaviour
         // Inicializamos el juego
         StartCoroutine(ResetGame());
     }
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-            PrintGrid();
-    }
-
-    // Used for debugging
-    void PrintGrid()
-    {
-        for (int y = 0; y < _height; y++)
-        {
-            string row = $"{y}:  ";
-            for (int x = 0; x < _width; x++)
-                row += _grid[x, y] + " ";
-            Debug.Log(row);
-        }
-    }
-
-
 
     IEnumerator ResetGame(float delay = 0)
     {
@@ -82,11 +60,9 @@ public class GameManager : MonoBehaviour
 
     void InitializeGrid()
     {
-        GetCellsParent();
         _grid = new int[_width, _height];
         FillRandomBombs();
     }
-    void GetCellsParent() => cells = GameObject.Find("Cells");
 
     void FillRandomBombs()
     {
@@ -135,7 +111,6 @@ public class GameManager : MonoBehaviour
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
                 cell.tag = Tags.GetTagName()[tagsTypes.CELL];
-                cell.transform.SetParent(cells.transform);
             }
         }
     }
