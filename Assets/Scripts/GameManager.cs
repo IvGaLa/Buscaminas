@@ -20,27 +20,36 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            SceneManager.sceneLoaded += OnSceneLoaded;
             DontDestroyOnLoad(gameObject); // Mantenemos el objeto en todas las escenas
         }
         else
         {
             Destroy(gameObject); // Destruimos el objeto si ya existe
         }
-
-        // Inicializamos el juego
-        StartCoroutine(ResetGame());
     }
+
+    void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
+
+    // Inicializamos el juego
+    void StartGame(float delay = 0) => StartCoroutine(ResetGame(delay));
 
     IEnumerator ResetGame(float delay = 0)
     {
         _playing = false;
         yield return new WaitForSeconds(delay);
         DestroyAllCells();
-        GetGameSettings();
+        GetGameSettings(ConfigVariables.GetConfigValue<difficultyTypes>(configTypes.DIFFICULTY));
         InitializeGrid();
         SetCamSize();
         ShowGrid();
         _playing = true;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == ScenesVariables.GetScenesVariables()[scenesTypes.GAME])
+            StartGame();
     }
 
     void DestroyAllCells()
@@ -129,17 +138,19 @@ public class GameManager : MonoBehaviour
     void CheckWin()
     {
         if (_cellsRevealed == _totalRevealed)
-        {
-            Debug.Log("You win");
-            StartCoroutine(ResetGame(DELAY_WIN));
-            //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
-        }
+            WinGame();
+    }
+
+
+    void WinGame()
+    {
+        StartGame(DELAY_WIN);
+        //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
     }
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
-        StartCoroutine(ResetGame(DELAY_LOSE));
+        StartGame(DELAY_LOSE);
         //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
     }
 
