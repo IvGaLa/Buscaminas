@@ -3,42 +3,12 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
   CellData _cellData;
+
   public CellData CellData { get => _cellData; set => _cellData = value; }
+  public void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0) => GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
+  public void InitializeCellData(CellData cellData) => _cellData = cellData;
+  void Reveal() => GameManager.Instance.RevealCell(this);
 
-  public void InitializeCellData(CellData cellData)
-  {
-    _cellData = cellData;
-  }
-
-  // Método para revelar la celda
-  void Reveal(Vector2Int position)
-  {
-    GameManager.Instance.RevealCell(this);
-
-    // _cellData.IsRevealed = true;
-    // GameManager.Instance.AddCellRevealed();
-    // int x = position.x;
-    // int y = position.y;
-    // int countBombs = CountBombs(x, y);
-
-    // if (countBombs == 0)
-    // {
-    //   foreach (var direction in Directions.GetDirections())
-    //   {
-    //     int dx = direction.Value.x;
-    //     int dy = direction.Value.y;
-    //     int nx = x + dx;
-    //     int ny = y + dy;
-
-    //     if (!GameManager.Instance.CheckHasBomb(nx, ny))
-    //     {
-    //       Reveal(new Vector2Int(nx, ny));
-    //     }
-    //   }
-    // }
-
-    // ChangeSprite((spritesNamesTypes)countBombs);
-  }
 
   public int CountBombs(int x, int y)
   {
@@ -55,43 +25,44 @@ public class Cell : MonoBehaviour
   }
 
 
-  void ToggleFlag()
+  void HandleRightClick()
   {
     _cellData.HasFlag = !_cellData.HasFlag;
     spritesNamesTypes _newSprite = (_cellData.HasFlag) ? spritesNamesTypes.FLAG : spritesNamesTypes.UNREVEALED;
     ChangeSprite(_newSprite);
   }
 
-  //void OnMouseDown()
   void OnMouseOver()
   {
-    if (!GameManager.Instance.Playing) return;
-
-    // Si ya está revelada, no hacer nada
-    if (_cellData.IsRevealed) return;
-
-    if (Input.GetMouseButtonDown(1)) // Right click
-    {
-      ToggleFlag();
-    }
-    else if (Input.GetMouseButtonDown(0)) // Left click
-    {
-      if (_cellData.HasFlag) return;
-
-      if (_cellData.HasBomb)
-      {
-        ChangeSprite(spritesNamesTypes.BOMB_1);
-        GameManager.Instance.GameOver();
-        return;
-      }
-
-      Reveal(_cellData.Position);
-
-    }
+    // Si no se está jugando o la celda ya fue revelada, no hacer nada
+    if ((!GameManager.Instance.Playing) || _cellData.IsRevealed) return;
+    HandleClick();
   }
 
-  public void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0)
+
+  void HandleClick()
   {
-    GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
+    if (Input.GetMouseButtonDown(1)) // Right click
+      HandleRightClick();
+    else if (Input.GetMouseButtonDown(0)) // Left click
+      HandleLeftClick();
   }
+
+  void HandleLeftClick()
+  {
+    if (_cellData.HasFlag) return;
+
+    if (_cellData.HasBomb)
+      HandleHasBomb();
+    else
+      Reveal();
+
+  }
+
+  void HandleHasBomb()
+  {
+    ChangeSprite(spritesNamesTypes.BOMB_1);
+    GameManager.Instance.GameOver();
+  }
+
 }

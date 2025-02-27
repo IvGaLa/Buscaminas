@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,14 +8,14 @@ public class GameManager : MonoBehaviour
     readonly int DELAY_WIN = 5;
     readonly int DELAY_LOSE = 10;
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
-    int _width, _height, _bombs, _camSize;
+
+    int _width, _height, _bombs, _camSize, _totalRevealed, _cellsRevealed;
     int[,] _grid;
-    int _totalRevealed, _cellsRevealed;
     bool _playing;
+
     public static GameManager Instance { get; private set; }
     public bool Playing => _playing;
-    [SerializeField] GameObject cells;
-
+    GameObject cells; // GameObject padre de todas las celdas.
     void Awake()
     {
         if (Instance == null)
@@ -26,8 +27,31 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject); // Destruimos el objeto si ya existe
         }
+
+        // Inicializamos el juego
         StartCoroutine(ResetGame());
     }
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+            PrintGrid();
+    }
+
+    // Used for debugging
+    void PrintGrid()
+    {
+        for (int y = 0; y < _height; y++)
+        {
+            string row = $"{y}:  ";
+            for (int x = 0; x < _width; x++)
+                row += _grid[x, y] + " ";
+            Debug.Log(row);
+        }
+    }
+
+
 
     IEnumerator ResetGame(float delay = 0)
     {
@@ -46,6 +70,37 @@ public class GameManager : MonoBehaviour
         GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName()[tagsTypes.CELL]);
         foreach (var cell in allCells)
             Destroy(cell);
+    }
+
+    void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
+    {
+        (_width, _height, _bombs) = GameSettings.GetGameSettings()[difficulty];
+        _camSize = (Mathf.Max(_width, _height) / 2) + 1;
+        _totalRevealed = _width * _height - _bombs;
+        _cellsRevealed = 0;
+    }
+
+    void InitializeGrid()
+    {
+        GetCellsParent();
+        _grid = new int[_width, _height];
+        FillRandomBombs();
+    }
+    void GetCellsParent() => cells = GameObject.Find("Cells");
+
+    void FillRandomBombs()
+    {
+        int bombsPlaced = 0;
+        while (bombsPlaced < _bombs)
+        {
+            int x = Random.Range(0, _width);
+            int y = Random.Range(0, _height);
+            if (_grid[x, y] != BOMB)
+            {
+                _grid[x, y] = BOMB;
+                bombsPlaced++;
+            }
+        }
     }
 
     void SetCamSize()
@@ -85,30 +140,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void InitializeGrid()
-    {
-        _grid = new int[_width, _height];
-        int bombsPlaced = 0;
-        while (bombsPlaced < _bombs)
-        {
-            int x = Random.Range(0, _width);
-            int y = Random.Range(0, _height);
-            if (_grid[x, y] != BOMB)
-            {
-                _grid[x, y] = BOMB;
-                bombsPlaced++;
-            }
-        }
-    }
-
-    void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
-    {
-        (_width, _height, _bombs) = GameSettings.GetGameSettings()[difficulty];
-        _camSize = (Mathf.Max(_width, _height) / 2) + 1;
-        _totalRevealed = _width * _height - _bombs;
-        _cellsRevealed = 0;
-    }
-
     public bool CheckHasBomb(int x, int y) => CheckInBounds(x, y) && _grid[x, y] == BOMB;
 
     bool CheckInBounds(int x, int y) => x >= 0 && x < _width && y >= 0 && y < _height;
@@ -139,28 +170,43 @@ public class GameManager : MonoBehaviour
 
     public void RevealCell(Cell cell)
     {
-        cell.CellData.IsRevealed = true;
-        AddCellRevealed();
-        int x = cell.CellData.Position.x;
-        int y = cell.CellData.Position.y;
-        int countBombs = cell.CountBombs(x, y);
+        Stack<Cell> cellsToReveal = new Stack<Cell>();
+        cellsToReveal.Push(cell);
 
-        cell.ChangeSprite((spritesNamesTypes)countBombs);
-
-        if (countBombs > 0)
-            return;
-
-        foreach (var direction in Directions.GetDirections())
+        while (cellsToReveal.Count > 0)
         {
-            int dx = direction.Value.x;
-            int dy = direction.Value.y;
-            int nx = x + dx;
-            int ny = y + dy;
-            if (!CheckHasBomb(nx, ny))
+            Cell currentCell = cellsToReveal.Pop();
+            if (!currentCell.CellData.IsRevealed)
             {
-                GameObject newCell = GameObject.Find($"{nx}-{ny}");
-                Cell newCellScript = newCell.GetComponent<Cell>();
-                RevealCell(newCellScript);
+                currentCell.CellData.IsRevealed = true;
+                AddCellRevealed();
+            }
+            int x = currentCell.CellData.Position.x;
+            int y = currentCell.CellData.Position.y;
+            int countBombs = currentCell.CountBombs(x, y);
+
+            currentCell.ChangeSprite((spritesNamesTypes)countBombs);
+
+            if (countBombs > 0)
+                continue;
+
+            foreach (var direction in Directions.GetDirections())
+            {
+                int dx = direction.Value.x;
+                int dy = direction.Value.y;
+                int nx = x + dx;
+                int ny = y + dy;
+                if (!CheckHasBomb(nx, ny))
+                {
+                    GameObject newCell = GameObject.Find($"{nx}-{ny}");
+                    if (newCell != null)
+                    {
+                        Cell newCellScript = newCell.GetComponent<Cell>();
+                        if (!newCellScript.CellData.IsRevealed)
+                            cellsToReveal.Push(newCellScript);
+
+                    }
+                }
             }
         }
     }
