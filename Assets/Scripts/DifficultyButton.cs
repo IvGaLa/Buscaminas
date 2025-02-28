@@ -1,13 +1,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DifficultyButton : MonoBehaviour
 {
-    readonly gameSettingsTypes[] difficulties = { gameSettingsTypes.EASY, gameSettingsTypes.MEDIUM, gameSettingsTypes.HARD };
+    //Button _button;
+    [SerializeField] gameSettingsTypes _gameSettings; // Set difficulty in inspector for each button
 
-    public void SelectDifficulty(int difficulty)
+
+    void Start() => GetComponent<Button>().onClick.AddListener(() => SelectDifficulty(_gameSettings));
+
+    void SelectDifficulty(gameSettingsTypes gameSettings = gameSettingsTypes.EASY)
     {
-        ConfigVariables.SetConfigValue<gameSettingsTypes>(configTypes.DIFFICULTY, difficulties[difficulty]);
+        ConfigVariables.SetConfigValue<gameSettingsTypes>(configTypes.DIFFICULTY, gameSettings);
         SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.GAME]);
     }
 }
