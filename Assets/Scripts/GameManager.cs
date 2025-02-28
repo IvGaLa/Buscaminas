@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     readonly int DELAY_WIN = 5;
     readonly int DELAY_LOSE = 10;
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
+    readonly Stack<string> _bombsCoords = new(); // Guarda las coordenadas de las bombas en el grid
 
     int _width, _height, _bombs, _camSize, _totalRevealed, _cellsRevealed;
     int[,] _grid;
@@ -62,7 +63,7 @@ public class GameManager : MonoBehaviour
     void GetGameSettings(gameSettingsTypes difficulty = gameSettingsTypes.EASY)
     {
         (_width, _height, _bombs) = GameSettings.GetGameSettings(difficulty);
-        
+
         _camSize = (Mathf.Max(_width, _height) / 2) + 1;
         _totalRevealed = _width * _height - _bombs;
         _cellsRevealed = 0;
@@ -85,6 +86,7 @@ public class GameManager : MonoBehaviour
             {
                 _grid[x, y] = BOMB;
                 bombsPlaced++;
+                _bombsCoords.Push($"{x}-{y}");
             }
         }
     }
@@ -149,10 +151,24 @@ public class GameManager : MonoBehaviour
         //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
     }
 
-    public void GameOver()
+    public void GameOver(Cell cell)
     {
+        RevealGrid(cell);
         StartGame(DELAY_LOSE);
         //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
+    }
+
+    void RevealGrid(Cell cell)
+    {
+        foreach (string bomb in _bombsCoords)
+        {
+            if (cell.name != bomb)
+            {
+                Cell cellScript = GameObject.Find(bomb).GetComponent<Cell>();
+                if (cellScript.CellData.HasBomb)
+                    cellScript.ChangeSprite(spritesNamesTypes.BOMB_1);
+            }
+        }
     }
 
     public void RevealCell(Cell cell)

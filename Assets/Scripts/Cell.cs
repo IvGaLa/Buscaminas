@@ -8,8 +8,6 @@ public class Cell : MonoBehaviour
   public void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0) => GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
   public void InitializeCellData(CellData cellData) => _cellData = cellData;
   void Reveal() => GameManager.Instance.RevealCell(this);
-
-
   public int CountBombs(int x, int y)
   {
     int bombs = 0;
@@ -61,8 +59,8 @@ public class Cell : MonoBehaviour
 
   void HandleHasBomb()
   {
-    ChangeSprite(spritesNamesTypes.BOMB_1);
-    GameManager.Instance.GameOver();
+    ChangeSprite(spritesNamesTypes.BOMB_2);
+    GameManager.Instance.GameOver(this);
   }
 
 }
