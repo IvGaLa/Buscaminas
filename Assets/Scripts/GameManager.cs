@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         _playing = false;
         yield return new WaitForSeconds(delay);
         DestroyAllCells();
-        GetGameSettings(ConfigVariables.GetConfigValue<difficultyTypes>(configTypes.DIFFICULTY));
+        GetGameSettings(ConfigVariables.GetConfigValue<gameSettingsTypes>(configTypes.DIFFICULTY));
         InitializeGrid();
         SetCamSize();
         ShowGrid();
@@ -59,9 +59,10 @@ public class GameManager : MonoBehaviour
             Destroy(cell);
     }
 
-    void GetGameSettings(difficultyTypes difficulty = difficultyTypes.EASY)
+    void GetGameSettings(gameSettingsTypes difficulty = gameSettingsTypes.EASY)
     {
-        (_width, _height, _bombs) = GameSettings.GetGameSettings()[difficulty];
+        (_width, _height, _bombs) = GameSettings.GetGameSettings(difficulty);
+        
         _camSize = (Mathf.Max(_width, _height) / 2) + 1;
         _totalRevealed = _width * _height - _bombs;
         _cellsRevealed = 0;

@@ -1,6 +1,9 @@
-public enum difficultyTypes
+public enum gameSettingsTypes
 {
   EASY,
   MEDIUM,
-  HARD
+  HARD,
+  WIDTH,
+  HEIGHT,
+  BOMBS
 }

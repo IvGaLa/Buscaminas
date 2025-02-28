@@ -20,15 +20,12 @@ public static class SpritesNamesVariables
     { spritesNamesTypes.QUESTION_1, "question_1" },
     { spritesNamesTypes.QUESTION_2, "question_2" },
     { spritesNamesTypes.UNREVEALED, "unrevealed" },
-
   };
 
   public static Dictionary<spritesNamesTypes, Sprite> GetSprite()
   {
     Sprite[] sprites = Resources.LoadAll<Sprite>(ConfigVariables.GetConfigValue<string>(configTypes.SPRITES_PATH) + ConfigVariables.GetConfigValue<string>(configTypes.TILESET_NAME));
     Dictionary<spritesNamesTypes, Sprite> _spritesNames = new();
-
-
     foreach (var sprite in sprites)
     {
       foreach (var key in spritesNames)
@@ -40,7 +37,6 @@ public static class SpritesNamesVariables
         }
       }
     }
-
     return _spritesNames;
   }
 }
