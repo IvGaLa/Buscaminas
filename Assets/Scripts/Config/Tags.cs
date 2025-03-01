@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-
-public static class Tags
+public class Tags
 {
-  public static Dictionary<tagsTypes, string> GetTagName()
-  {
-    Dictionary<tagsTypes, string> _tags = new(){
+  static readonly Dictionary<tagsTypes, string> _tags = new(){
     {tagsTypes.UNTAGGED, "Untagged"},
     {tagsTypes.RESPAWN, "Respawn"},
     {tagsTypes.FINISH, "Finish"},
@@ -14,7 +11,5 @@ public static class Tags
     {tagsTypes.GAMECONTROLLER, "GameController"},
     {tagsTypes.CELL, "Cell"},
   };
-    return _tags;
-  }
-
+  public static Dictionary<tagsTypes, string> GetTagName() => _tags;
 }

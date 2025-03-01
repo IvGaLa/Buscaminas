@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -73,20 +74,19 @@ public class GameManager : MonoBehaviour
     void InitializeGrid()
     {
         _grid = new int[_width, _height];
+        _bombsCoords.Clear();
         FillRandomBombs();
     }
 
     void FillRandomBombs()
     {
-        int bombsPlaced = 0;
-        while (bombsPlaced < _bombs)
+        while (_bombsCoords.LongCount() < _bombs)
         {
             int x = Random.Range(0, _width);
             int y = Random.Range(0, _height);
             if (_grid[x, y] != BOMB)
             {
                 _grid[x, y] = BOMB;
-                bombsPlaced++;
                 _bombsCoords.Push($"{x}-{y}");
             }
         }
