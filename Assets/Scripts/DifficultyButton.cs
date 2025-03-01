@@ -1,18 +1,29 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class DifficultyButton : MonoBehaviour
 {
-    //Button _button;
-    [SerializeField] gameSettingsTypes _gameSettings; // Set difficulty in inspector for each button
+    [SerializeField] private ButtonData _gameSettings; // ScriptableObject con la configuración de dificultad
+    private Button _button;
+    private TMP_Text _buttonText;
 
-
-    void Start() => GetComponent<Button>().onClick.AddListener(() => SelectDifficulty(_gameSettings));
-
-    void SelectDifficulty(gameSettingsTypes gameSettings = gameSettingsTypes.EASY)
+    private void Awake()
     {
-        ConfigVariables.SetConfigValue<gameSettingsTypes>(configTypes.DIFFICULTY, gameSettings);
+        _button = GetComponent<Button>();
+        _buttonText = GetComponentInChildren<TMP_Text>();
+    }
+
+    private void Start()
+    {
+        _button.onClick.AddListener(SelectDifficulty);
+        _buttonText.text = GameSettings.GetGameSettings(_gameSettings.GameSetting).Name;
+    }
+
+    private void SelectDifficulty()
+    {
+        ConfigVariables.SetConfigValue(configTypes.DIFFICULTY, _gameSettings.GameSetting);
         SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.GAME]);
     }
 }

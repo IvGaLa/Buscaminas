@@ -187,6 +187,10 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 6852910850573123247, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
+      propertyPath: _gameSettings
+      value: 
+      objectReference: {fileID: 11400000, guid: a7f22e6a19bd968419e578c62fef5e7b, type: 2}
     - target: {fileID: 8369926939787936199, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -352,8 +356,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6852910850573123247, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
       propertyPath: _gameSettings
-      value: 2
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: bad238a467ad1d943804693059b265ff, type: 2}
     - target: {fileID: 8369926939787936199, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -875,8 +879,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6852910850573123247, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
       propertyPath: _gameSettings
-      value: 1
-      objectReference: {fileID: 0}
+      value: 
+      objectReference: {fileID: 11400000, guid: e8f60d4b9756d5c48bf1e89b9cf9734f, type: 2}
     - target: {fileID: 8369926939787936199, guid: 3a1536fb772492b4db7e801f7e463dfe, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

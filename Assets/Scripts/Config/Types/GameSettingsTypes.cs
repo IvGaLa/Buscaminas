@@ -5,5 +5,6 @@ public enum gameSettingsTypes
   HARD,
   WIDTH,
   HEIGHT,
-  BOMBS
+  BOMBS,
+  NAME
 }
