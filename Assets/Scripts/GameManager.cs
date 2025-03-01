@@ -149,14 +149,12 @@ public class GameManager : MonoBehaviour
     void WinGame()
     {
         StartGame(DELAY_WIN);
-        //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.WIN]);
     }
 
     public void GameOver(Cell cell)
     {
         RevealGrid(cell);
         StartGame(DELAY_LOSE);
-        //SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.LOSE]);
     }
 
     void RevealGrid(Cell cell)
