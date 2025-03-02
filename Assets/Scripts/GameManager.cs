@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == ScenesVariables.GetScenesVariables()[scenesTypes.GAME])
+        if (scene.name == ScenesVariables.GetScenesVariables(scenesTypes.GAME))
             StartGame();
     }
 

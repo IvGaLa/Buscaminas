@@ -5,5 +5,5 @@ public class ScenesVariables
     {scenesTypes.MAIN, "Main"},
     {scenesTypes.GAME, "Game"}
   };
-  public static Dictionary<scenesTypes, string> GetScenesVariables() => _sceneName;
+  public static string GetScenesVariables(scenesTypes scene) => _sceneName[scene];
 }

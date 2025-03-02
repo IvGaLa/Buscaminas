@@ -16,6 +16,6 @@ public class DifficultyButton : MonoBehaviour
     void SelectDifficulty()
     {
         ConfigVariables.SetConfigValue(configTypes.DIFFICULTY, _gameSettings.GameSetting);
-        SceneManager.LoadScene(ScenesVariables.GetScenesVariables()[scenesTypes.GAME]);
+        SceneManager.LoadScene(ScenesVariables.GetScenesVariables(scenesTypes.GAME));
     }
 }
