@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
 
     void DestroyAllCells()
     {
-        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName()[tagsTypes.CELL]);
+        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName(tagsTypes.CELL));
         foreach (var cell in allCells)
             Destroy(cell);
     }
@@ -123,7 +123,6 @@ public class GameManager : MonoBehaviour
 
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";
-                cell.tag = Tags.GetTagName()[tagsTypes.CELL];
             }
         }
     }

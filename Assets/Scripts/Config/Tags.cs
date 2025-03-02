@@ -11,5 +11,5 @@ public class Tags
     {tagsTypes.GAMECONTROLLER, "GameController"},
     {tagsTypes.CELL, "Cell"},
   };
-  public static Dictionary<tagsTypes, string> GetTagName() => _tags;
+  public static string GetTagName(tagsTypes tag) => _tags[tag];
 }

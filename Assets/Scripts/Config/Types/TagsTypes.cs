@@ -8,5 +8,4 @@ public enum tagsTypes
   PLAYER,
   GAMECONTROLLER,
   CELL,
-
 }
