@@ -147,6 +147,7 @@ public class GameManager : MonoBehaviour
 
     void WinGame()
     {
+        ScreenShot.TakeScreenShot();
         StartGame(DELAY_WIN);
     }
 
