@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         InitializeGrid();
         SetCamSize();
         ShowGrid();
+        Timer.ResetTimer();
         _playing = true;
     }
 

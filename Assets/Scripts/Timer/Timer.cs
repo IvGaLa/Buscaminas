@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    float timer = 0;
+    static float timer = 0;
     TMP_Text timerText;
 
     void Awake() => timerText = GetComponentInChildren<TMP_Text>();
@@ -15,4 +15,7 @@ public class Timer : MonoBehaviour
         timer += Time.deltaTime;
         timerText.text = TimerToString();
     }
+
+    public static void ResetTimer() => timer = 0;
+
 }
