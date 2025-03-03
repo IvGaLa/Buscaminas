@@ -1,4 +1,4 @@
-public enum gameSettingsTypes
+public enum GameSettingsTypes
 {
   EASY,
   MEDIUM,

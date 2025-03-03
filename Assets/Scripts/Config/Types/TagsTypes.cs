@@ -1,4 +1,4 @@
-public enum tagsTypes
+public enum TagsTypes
 {
   UNTAGGED,
   RESPAWN,

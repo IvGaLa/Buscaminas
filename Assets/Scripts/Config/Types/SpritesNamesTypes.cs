@@ -1,4 +1,4 @@
-public enum spritesNamesTypes
+public enum SpritesNamesTypes
 {
   _0,
   _1,

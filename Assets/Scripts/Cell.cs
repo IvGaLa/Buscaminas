@@ -4,7 +4,7 @@ public class Cell : MonoBehaviour
 {
   CellData _cellData;
   public CellData CellData { get => _cellData; set => _cellData = value; }
-  public void ChangeSprite(spritesNamesTypes newSprite = spritesNamesTypes._0) => GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite()[newSprite];
+  public void ChangeSprite(SpritesNamesTypes newSprite = SpritesNamesTypes._0) => GetComponent<SpriteRenderer>().sprite = SpritesNamesVariables.GetSprite(newSprite);
   public void InitializeCellData(CellData cellData) => _cellData = cellData;
   void Reveal() => GameManager.Instance.RevealCell(this);
   public int CountBombs(int x, int y)
@@ -24,7 +24,7 @@ public class Cell : MonoBehaviour
   void HandleRightClick()
   {
     _cellData.HasFlag = !_cellData.HasFlag;
-    spritesNamesTypes _newSprite = _cellData.HasFlag ? spritesNamesTypes.FLAG : spritesNamesTypes.UNREVEALED;
+    SpritesNamesTypes _newSprite = _cellData.HasFlag ? SpritesNamesTypes.FLAG : SpritesNamesTypes.UNREVEALED;
     ChangeSprite(_newSprite);
   }
 
@@ -57,7 +57,7 @@ public class Cell : MonoBehaviour
 
   void HandleHasBomb()
   {
-    ChangeSprite(spritesNamesTypes.BOMB_2);
+    ChangeSprite(SpritesNamesTypes.BOMB_2);
     GameManager.Instance.GameOver(this);
   }
 

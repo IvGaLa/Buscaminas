@@ -1,38 +1,38 @@
 using System.Collections.Generic;
 public static class GameSettings
 {
-  static readonly Dictionary<gameSettingsTypes, GameSettingsValues> _gameSettings = new()
+  static readonly Dictionary<GameSettingsTypes, GameSettingsValues> _gameSettings = new()
     {
       {
-        gameSettingsTypes.EASY, new GameSettingsValues(
-          new Dictionary<gameSettingsTypes, GameSettingValue>
+        GameSettingsTypes.EASY, new GameSettingsValues(
+          new Dictionary<GameSettingsTypes, GameSettingValue>
           {
-            {gameSettingsTypes.BOMBS,new GameSettingValue(10)},
-            {gameSettingsTypes.HEIGHT, new GameSettingValue(10)},
-            {gameSettingsTypes.WIDTH,new GameSettingValue(10)},
-            {gameSettingsTypes.NAME,new GameSettingValue("Easy")}
+            {GameSettingsTypes.BOMBS,new GameSettingValue(10)},
+            {GameSettingsTypes.HEIGHT, new GameSettingValue(10)},
+            {GameSettingsTypes.WIDTH,new GameSettingValue(10)},
+            {GameSettingsTypes.NAME,new GameSettingValue("Easy")}
           }
       )},
       {
-        gameSettingsTypes.MEDIUM, new GameSettingsValues(
-          new Dictionary<gameSettingsTypes, GameSettingValue>
+        GameSettingsTypes.MEDIUM, new GameSettingsValues(
+          new Dictionary<GameSettingsTypes, GameSettingValue>
           {
-            {gameSettingsTypes.BOMBS,new GameSettingValue(40)},
-            {gameSettingsTypes.HEIGHT, new GameSettingValue(20)},
-            {gameSettingsTypes.WIDTH,new GameSettingValue(20)},
-            {gameSettingsTypes.NAME,new GameSettingValue("Medium")}
+            {GameSettingsTypes.BOMBS,new GameSettingValue(40)},
+            {GameSettingsTypes.HEIGHT, new GameSettingValue(20)},
+            {GameSettingsTypes.WIDTH,new GameSettingValue(20)},
+            {GameSettingsTypes.NAME,new GameSettingValue("Medium")}
           }
       )},
       {
-        gameSettingsTypes.HARD, new GameSettingsValues(
-          new Dictionary<gameSettingsTypes, GameSettingValue>
+        GameSettingsTypes.HARD, new GameSettingsValues(
+          new Dictionary<GameSettingsTypes, GameSettingValue>
           {
-            {gameSettingsTypes.BOMBS,new GameSettingValue(99)},
-            {gameSettingsTypes.HEIGHT, new GameSettingValue(30)},
-            {gameSettingsTypes.WIDTH,new GameSettingValue(30)},
-            {gameSettingsTypes.NAME,new GameSettingValue("Hard")}
+            {GameSettingsTypes.BOMBS,new GameSettingValue(99)},
+            {GameSettingsTypes.HEIGHT, new GameSettingValue(30)},
+            {GameSettingsTypes.WIDTH,new GameSettingValue(30)},
+            {GameSettingsTypes.NAME,new GameSettingValue("Hard")}
           }
       )},
     };
-  public static GameSettingsValues GetGameSettings(gameSettingsTypes difficulty) => _gameSettings[difficulty];
+  public static GameSettingsValues GetGameSettings(GameSettingsTypes difficulty) => _gameSettings[difficulty];
 }

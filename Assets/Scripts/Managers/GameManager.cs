@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         _playing = false;
         yield return new WaitForSeconds(delay);
         DestroyAllCells();
-        GetGameSettings(ConfigVariables.GetConfigValue<gameSettingsTypes>(configTypes.DIFFICULTY));
+        GetGameSettings(ConfigVariables.GetConfigValue<GameSettingsTypes>(ConfigTypes.DIFFICULTY));
         InitializeGrid();
         SetCamSize();
         ShowGrid();
@@ -50,18 +50,18 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == ScenesVariables.GetScenesVariables(scenesTypes.GAME))
+        if (scene.name == ScenesVariables.GetScenesVariables(ScenesTypes.GAME))
             StartGame();
     }
 
     void DestroyAllCells()
     {
-        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName(tagsTypes.CELL));
+        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName(TagsTypes.CELL));
         foreach (var cell in allCells)
             Destroy(cell);
     }
 
-    void GetGameSettings(gameSettingsTypes difficulty = gameSettingsTypes.EASY)
+    void GetGameSettings(GameSettingsTypes difficulty = GameSettingsTypes.EASY)
     {
         _width = GameSettings.GetGameSettings(difficulty).Width;
         _height = GameSettings.GetGameSettings(difficulty).Height;
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
     void ShowGrid()
     {
         // Cargamos el prefab de la celda por defecto (unrevealed)
-        GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(configTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(configTypes.PREFAB_CELL));
+        GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFAB_CELL));
 
         for (int y = 0; y < _height; y++)
         {
@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
             {
                 Cell cellScript = GameObject.Find(bomb).GetComponent<Cell>();
                 if (cellScript.CellData.HasBomb)
-                    cellScript.ChangeSprite(spritesNamesTypes.BOMB_1);
+                    cellScript.ChangeSprite(SpritesNamesTypes.BOMB_1);
             }
         }
     }
@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
             int y = currentCell.CellData.Position.y;
             int countBombs = currentCell.CountBombs(x, y);
 
-            currentCell.ChangeSprite((spritesNamesTypes)countBombs);
+            currentCell.ChangeSprite((SpritesNamesTypes)countBombs);
 
             if (countBombs > 0)
                 continue;

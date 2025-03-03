@@ -1,8 +1,10 @@
-public enum configTypes
+public enum ConfigTypes
 {
   PREFABS_CELLS_PATH,
   PREFAB_CELL,
   SPRITES_PATH,
   TILESET_NAME,
-  DIFFICULTY
+  DIFFICULTY,
+  MUSIC_PATH,
+  SFX_PATH
 }

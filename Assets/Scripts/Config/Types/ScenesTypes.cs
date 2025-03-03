@@ -1,4 +1,4 @@
-public enum scenesTypes
+public enum ScenesTypes
 {
   MAIN,
   GAME

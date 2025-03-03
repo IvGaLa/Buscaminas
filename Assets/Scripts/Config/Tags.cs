@@ -1,15 +1,15 @@
 using System.Collections.Generic;
 public class Tags
 {
-  static readonly Dictionary<tagsTypes, string> _tags = new(){
-    {tagsTypes.UNTAGGED, "Untagged"},
-    {tagsTypes.RESPAWN, "Respawn"},
-    {tagsTypes.FINISH, "Finish"},
-    {tagsTypes.EDITORONLY, "EditorOnly"},
-    {tagsTypes.MAINCAMERA, "MainCamera"},
-    {tagsTypes.PLAYER, "Player"},
-    {tagsTypes.GAMECONTROLLER, "GameController"},
-    {tagsTypes.CELL, "Cell"},
+  static readonly Dictionary<TagsTypes, string> _tags = new(){
+    {TagsTypes.UNTAGGED, "Untagged"},
+    {TagsTypes.RESPAWN, "Respawn"},
+    {TagsTypes.FINISH, "Finish"},
+    {TagsTypes.EDITORONLY, "EditorOnly"},
+    {TagsTypes.MAINCAMERA, "MainCamera"},
+    {TagsTypes.PLAYER, "Player"},
+    {TagsTypes.GAMECONTROLLER, "GameController"},
+    {TagsTypes.CELL, "Cell"},
   };
-  public static string GetTagName(tagsTypes tag) => _tags[tag];
+  public static string GetTagName(TagsTypes tag) => _tags[tag];
 }
