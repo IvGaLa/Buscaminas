@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             SceneManager.sceneLoaded += OnSceneLoaded;
-            DontDestroyOnLoad(gameObject); // Mantenemos el objeto en todas las escenas
+            DontDestroyOnLoad(gameObject); // Mantenemos el Manager en todas las escenas
         }
         else
         {
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     void ShowGrid()
     {
         // Cargamos el prefab de la celda por defecto (unrevealed)
-        GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFABS_CELLS_PATH) + ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFAB_CELL));
+        GameObject _cellPrefab = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFABS_PATH) + ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFAB_CELL));
 
         for (int y = 0; y < _height; y++)
         {
@@ -149,11 +149,13 @@ public class GameManager : MonoBehaviour
     void WinGame()
     {
         ScreenShot.TakeScreenShot();
+        AudioManager.Instance.PlaySFX(SFXTypes.WINGAME, transform);
         StartGame(DELAY_WIN);
     }
 
     public void GameOver(Cell cell)
     {
+        AudioManager.Instance.PlaySFX(SFXTypes.EXPLOSION01, transform);
         RevealGrid(cell);
         StartGame(DELAY_LOSE);
     }

@@ -4,12 +4,13 @@ public class ConfigVariables
 {
   static readonly Dictionary<ConfigTypes, object> _config = new()
     {
-        { ConfigTypes.PREFABS_CELLS_PATH, new ConfigValues<string>("Prefabs/") },
+        { ConfigTypes.PREFABS_PATH, new ConfigValues<string>("Prefabs/") },
         { ConfigTypes.SPRITES_PATH, new ConfigValues<string>("Sprites/") },
         { ConfigTypes.MUSIC_PATH, new ConfigValues<string>("Audio/Music/") },
         { ConfigTypes.SFX_PATH, new ConfigValues<string>("Audio/SFX/") },
-        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
         { ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper") },
+        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
+        { ConfigTypes.PREFAB_SFX_AUDIO_SOURCE, new ConfigValues<string>("SFXPlayer") },
         { ConfigTypes.DIFFICULTY, new ConfigValues<GameSettingsTypes>(GameSettingsTypes.EASY) }, // Default difficulty
         // { ConfigTypes.MUSIC_ENABLED, new ConfigValues<bool>(true) },
         // { ConfigTypes.VOLUME_LEVEL, new ConfigValues<int>(80) }
