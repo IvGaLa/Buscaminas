@@ -1,5 +1,8 @@
 public enum ConfigTypes
 {
+  AUTHOR,
+  TITLE,
+  GITHUB,
   PREFABS_PATH,
   SPRITES_PATH,
   MUSIC_PATH,
