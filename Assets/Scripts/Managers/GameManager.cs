@@ -95,11 +95,18 @@ public class GameManager : MonoBehaviour
 
     void SetCamSize()
     {
+        Camera cam = Camera.main;
         // Ajustamos el tamaño de la cámara en función del tamaño de la cuadrícula
-        Camera.main.orthographicSize = _camSize;
+        float aspectRatio = (float)Screen.width / Screen.height;
+
+        // Mantener el ancho del grid visible ajustando la altura de la cámara
+        float targetSize = (_width + 5 / 2f) / aspectRatio;
+
+        // Ajustar el tamaño de la cámara
+        cam.orthographicSize = Mathf.Max(targetSize, _camSize);
 
         // Centramos la cámara en relación al tamaño de la cuadrícula
-        Camera.main.transform.position = new Vector3(_width / 2f, _height / 2f, -10);
+        cam.transform.position = new Vector3(_width / 2f, _height / 2f, -10);
     }
 
     void ShowGrid()
