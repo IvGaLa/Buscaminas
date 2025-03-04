@@ -1,5 +1,8 @@
 public enum SFXTypes
 {
+  CLICKBUTTON,
   EXPLOSION01,
-  WINGAME
+  REVEALCELL,
+  SELECTGAME,
+  WINGAME,
 }

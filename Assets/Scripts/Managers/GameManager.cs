@@ -156,13 +156,13 @@ public class GameManager : MonoBehaviour
     void WinGame()
     {
         ScreenShot.TakeScreenShot();
-        AudioManager.Instance.PlaySFX(SFXTypes.WINGAME, transform);
+        AudioManager.Instance.PlaySFX(SFXTypes.WINGAME);
         StartGame(DELAY_WIN);
     }
 
     public void GameOver(Cell cell)
     {
-        AudioManager.Instance.PlaySFX(SFXTypes.EXPLOSION01, transform);
+        AudioManager.Instance.PlaySFX(SFXTypes.EXPLOSION01);
         RevealGrid(cell);
         StartGame(DELAY_LOSE);
     }
@@ -184,6 +184,8 @@ public class GameManager : MonoBehaviour
     {
         Stack<Cell> cellsToReveal = new Stack<Cell>();
         cellsToReveal.Push(cell);
+
+        AudioManager.Instance.PlaySFX(SFXTypes.REVEALCELL);
 
         while (cellsToReveal.Count > 0)
         {

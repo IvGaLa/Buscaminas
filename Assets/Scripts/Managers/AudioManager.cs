@@ -24,10 +24,10 @@ public class AudioManager : MonoBehaviour
 
   }
 
-  public void PlaySFX(SFXTypes sfxType, Transform spawnTransform, float volume = 1f)
+  public void PlaySFX(SFXTypes sfxType, float volume = 1f)
   {
     // Spawn gameObject with audiolistener
-    AudioSource audioSource = Instantiate(sfxAudioSource, spawnTransform.position, Quaternion.identity);
+    AudioSource audioSource = Instantiate(sfxAudioSource, transform.position, Quaternion.identity);
 
     // Assign audio clip
     audioSource.clip = SFXVariables.GetSFX(sfxType);

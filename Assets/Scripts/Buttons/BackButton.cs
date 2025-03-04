@@ -5,5 +5,9 @@ using UnityEngine.UI;
 public class BackButton : MonoBehaviour
 {
     void Start() => GetComponent<Button>().onClick.AddListener(BackToMain);
-    void BackToMain() => SceneManager.LoadScene(ScenesVariables.GetScenesVariables(ScenesTypes.MAIN));
+    void BackToMain()
+    {
+        AudioManager.Instance.PlaySFX(SFXTypes.CLICKBUTTON);
+        SceneManager.LoadScene(ScenesVariables.GetScenesVariables(ScenesTypes.MAIN));
+    }
 }
