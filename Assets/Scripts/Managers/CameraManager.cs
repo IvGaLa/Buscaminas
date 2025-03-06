@@ -1,7 +1,7 @@
 using UnityEngine;
-public class PersistentCamera : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
-    static PersistentCamera Instance;
+    static CameraManager Instance;
     private void Awake()
     {
         if (Instance == null)

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     readonly int DELAY_WIN = 5;
-    readonly int DELAY_LOSE = 10;
+    readonly int DELAY_LOSE = 5;
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
     readonly Stack<string> _bombsCoords = new(); // Guarda las coordenadas de las bombas en el grid
 
@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour
         InitializeGrid();
         SetCamSize();
         ShowGrid();
-        Timer.ResetTimer();
+        TimerGame.Timer = 0;
         _playing = true;
     }
 
@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
 
     void WinGame()
     {
+        RankingManager.Instance.AddRanking();
         ScreenShot.TakeScreenShot();
         AudioManager.Instance.PlaySFX(SFXTypes.WINGAME);
         StartGame(DELAY_WIN);

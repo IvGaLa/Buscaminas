@@ -1,3 +1,4 @@
+using UnityEngine;
 using System.Collections.Generic;
 
 public class ConfigVariables
@@ -8,10 +9,14 @@ public class ConfigVariables
         { ConfigTypes.TITLE, new ConfigValues<string>("Buscaminas") },
         { ConfigTypes.GITHUB, new ConfigValues<string>("https://github.com/IvGaLa/Buscaminas") },
 
+        { ConfigTypes.DATE_FORMAT, new ConfigValues<string>("o") }, // yyyy-MM-DDTHH_mm_ss.ms+GMT
+        { ConfigTypes.SCREENSHOT_EXTENSION, new ConfigValues<string>(".png") },
+
         { ConfigTypes.PREFABS_PATH, new ConfigValues<string>("Prefabs/") },
         { ConfigTypes.SPRITES_PATH, new ConfigValues<string>("Sprites/") },
         { ConfigTypes.MUSIC_PATH, new ConfigValues<string>("Audio/Music/") },
         { ConfigTypes.SFX_PATH, new ConfigValues<string>("Audio/SFX/") },
+        { ConfigTypes.RANKING_PATH, new ConfigValues<string>($"{Application.persistentDataPath}/rankings.json") },
 
         { ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper") },
 
