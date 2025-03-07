@@ -10,6 +10,8 @@ public class ScreenShot : MonoBehaviour
         string extension = ConfigVariables.GetConfigValue<string>(ConfigTypes.SCREENSHOT_EXTENSION);
         // Replace ":" for "_"
         string screenshot = $"{title}-{dateFormat}{extension}".Replace(":", "_");
+#if !UNITY_EDITOR
         ScreenCapture.CaptureScreenshot(screenshot);
+#endif
     }
 }
