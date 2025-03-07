@@ -3,7 +3,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
   public static AudioManager Instance { get; private set; }
-  AudioSource sfxAudioSource;
+  AudioSource sfxAudioSource, musicAudioSource;
 
   void Awake()
   {
@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     {
       Instance = this;
       sfxAudioSource = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFABS_PATH) + ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFAB_SFX_AUDIO_SOURCE)).GetComponent<AudioSource>();
+      musicAudioSource = Resources.Load<GameObject>(ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFABS_PATH) + ConfigVariables.GetConfigValue<string>(ConfigTypes.PREFAB_MUSIC_AUDIO_SOURCE)).GetComponent<AudioSource>();
       DontDestroyOnLoad(gameObject); // Mantenemos el Manager en todas las escenas
     }
     else
@@ -19,9 +20,14 @@ public class AudioManager : MonoBehaviour
     }
   }
 
-  public void PlayMusic()
-  {
+  void Start() => PlayMusic(MusicTypes.MUSIC01);
 
+  public void PlayMusic(MusicTypes musicType, float volume = 1f)
+  {
+    AudioSource audioSource = Instantiate(musicAudioSource, transform.position, Quaternion.identity);
+    audioSource.clip = MusicVariables.GetMusic(musicType);
+    audioSource.volume = volume;
+    audioSource.Play();
   }
 
   public void PlaySFX(SFXTypes sfxType, float volume = 1f)

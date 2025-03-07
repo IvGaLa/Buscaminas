@@ -22,6 +22,7 @@ public class ConfigVariables
 
         { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
         { ConfigTypes.PREFAB_SFX_AUDIO_SOURCE, new ConfigValues<string>("SFXPlayer") },
+        { ConfigTypes.PREFAB_MUSIC_AUDIO_SOURCE, new ConfigValues<string>("MusicPlayer") },
 
         { ConfigTypes.DIFFICULTY, new ConfigValues<GameSettingsTypes>(GameSettingsTypes.EASY) }, // Default difficulty
         // { ConfigTypes.MUSIC_ENABLED, new ConfigValues<bool>(true) },
