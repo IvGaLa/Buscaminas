@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
     readonly Stack<string> _bombsCoords = new(); // Guarda las coordenadas de las bombas en el grid
 
-    int _width, _height, _bombs, _camSize, _totalRevealed, _cellsRevealed;
+    int _width, _height, _bombs, _camSize, _cellsRevealed;
     int[,] _grid;
     bool _playing;
 
@@ -68,8 +68,8 @@ public class GameManager : MonoBehaviour
         _height = GameSettings.GetGameSettings(difficulty).Height;
         _bombs = GameSettings.GetGameSettings(difficulty).Bombs;
         _camSize = (Mathf.Max(_width, _height) / 2) + 1;
-        _totalRevealed = _width * _height - _bombs;
-        _cellsRevealed = 0;
+        _cellsRevealed = _width * _height - _bombs;
+        Counter.SetCounter(_cellsRevealed);
     }
 
     void InitializeGrid()
@@ -141,14 +141,15 @@ public class GameManager : MonoBehaviour
 
     public void AddCellRevealed()
     {
-        _cellsRevealed++;
+        _cellsRevealed--;
+        Counter.SetCounter(_cellsRevealed);
         CheckWin();
     }
 
 
     void CheckWin()
     {
-        if (_cellsRevealed == _totalRevealed)
+        if (_cellsRevealed == 0)
             WinGame();
     }
 
