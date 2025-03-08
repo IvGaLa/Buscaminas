@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-public class Tags
+public class TagsVariables
 {
   static readonly Dictionary<TagsTypes, string> _tags = new(){
     {TagsTypes.UNTAGGED, "Untagged"},

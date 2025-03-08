@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    readonly int DELAY_WIN = 5;
-    readonly int DELAY_LOSE = 5;
     readonly int BOMB = -1; // Guardará si tiene bomba (-1)
     readonly Stack<string> _bombsCoords = new(); // Guarda las coordenadas de las bombas en el grid
 
@@ -17,6 +15,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public bool Playing => _playing;
+
+    GameObject finishGame;
     void Awake()
     {
         if (Instance == null)
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     void OnDestroy() => SceneManager.sceneLoaded -= OnSceneLoaded;
 
     // Inicializamos el juego
-    void StartGame(float delay = 0) => StartCoroutine(ResetGame(delay));
+    public void StartGame(float delay = 0) => StartCoroutine(ResetGame(delay));
 
     IEnumerator ResetGame(float delay = 0)
     {
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     void DestroyAllCells()
     {
-        GameObject[] allCells = GameObject.FindGameObjectsWithTag(Tags.GetTagName(TagsTypes.CELL));
+        GameObject[] allCells = GameObject.FindGameObjectsWithTag(TagsVariables.GetTagName(TagsTypes.CELL));
         foreach (var cell in allCells)
             Destroy(cell);
     }
@@ -153,20 +153,36 @@ public class GameManager : MonoBehaviour
             WinGame();
     }
 
+    void ShowFinishGame(bool win)
+    {
+        _playing = false;
+        Transform[] allObjects = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None); // With FindObjectsInactive.Include find inactive objects
+        foreach (Transform obj in allObjects)
+        {
+            if (obj.name == "FinishGame")
+            {
+                finishGame = obj.gameObject;
+                break;
+            }
+        }
+        finishGame.SetActive(true);
+        FinishGame finishGameScript = finishGame.GetComponent<FinishGame>();
+        finishGameScript.ShowPanel(win);
+    }
 
     void WinGame()
     {
         RankingManager.Instance.AddRanking();
         ScreenShot.TakeScreenShot();
         AudioManager.Instance.PlaySFX(SFXTypes.WINGAME);
-        StartGame(DELAY_WIN);
+        ShowFinishGame(true);
     }
 
     public void GameOver(Cell cell)
     {
         AudioManager.Instance.PlaySFX(SFXTypes.EXPLOSION01);
         RevealGrid(cell);
-        StartGame(DELAY_LOSE);
+        ShowFinishGame(false);
     }
 
     void RevealGrid(Cell cell)

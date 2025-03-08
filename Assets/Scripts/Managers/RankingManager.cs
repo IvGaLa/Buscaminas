@@ -79,6 +79,5 @@ public class RankingManager : MonoBehaviour
     };
     string json = JsonUtility.ToJson(updatedRanking, true);
     File.WriteAllText(rankingFile, json);
-    Debug.Log("Ranking saved");
   }
 }
