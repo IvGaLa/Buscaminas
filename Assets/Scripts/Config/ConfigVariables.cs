@@ -18,9 +18,11 @@ public class ConfigVariables
         { ConfigTypes.SFX_PATH, new ConfigValues<string>("Audio/SFX/") },
         { ConfigTypes.RANKING_PATH, new ConfigValues<string>($"{Application.persistentDataPath}/rankings.json") },
 
-        { ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper") },
+        //{ ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper") },
+        { ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper_stone") },
 
-        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
+        //{ ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
+        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell_stone") },
         { ConfigTypes.PREFAB_SFX_AUDIO_SOURCE, new ConfigValues<string>("SFXPlayer") },
         { ConfigTypes.PREFAB_MUSIC_AUDIO_SOURCE, new ConfigValues<string>("MusicPlayer") },
 
