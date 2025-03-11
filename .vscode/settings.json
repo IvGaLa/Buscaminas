@@ -56,5 +56,5 @@
     "temp/": true,
     "Temp/": true
   },
-  "dotnet.defaultSolution": "Buscaminas.sln"
+  "dotnet.defaultSolution": "Minesweeper.sln"
 }

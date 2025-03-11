@@ -1,4 +1,4 @@
-# Buscaminas
+# Minesweeper
 
 Are you able to get out alive from this intrepid "minesweeper"?
 

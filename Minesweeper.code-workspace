@@ -5,6 +5,6 @@
 		}
 	],
 	"settings": {
-		"dotnet.defaultSolution": "Buscaminas.sln"
+		"dotnet.defaultSolution": "Minesweeper.sln"
 	}
 }
