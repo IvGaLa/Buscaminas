@@ -128,6 +128,7 @@ public class GameManager : MonoBehaviour
                     HasFlag = false,
                     Position = new Vector2Int(x, y),
                 };
+                cellScript.ChangeSprite(SpritesNamesTypes.UNREVEALED);
 
                 cellScript.InitializeCellData(cellData);
                 cell.name = $"{x}-{y}";

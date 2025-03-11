@@ -6,8 +6,8 @@ public class ConfigVariables
   static readonly Dictionary<ConfigTypes, object> _config = new()
     {
         { ConfigTypes.AUTHOR, new ConfigValues<string>("IvGaLa") },
-        { ConfigTypes.TITLE, new ConfigValues<string>("Buscaminas") },
-        { ConfigTypes.GITHUB, new ConfigValues<string>("https://github.com/IvGaLa/Buscaminas") },
+        { ConfigTypes.TITLE, new ConfigValues<string>("Minesweeper") },
+        { ConfigTypes.GITHUB, new ConfigValues<string>("https://github.com/IvGaLa/Minesweeper") },
 
         { ConfigTypes.DATE_FORMAT, new ConfigValues<string>("o") }, // yyyy-MM-DDTHH_mm_ss.ms+GMT
         { ConfigTypes.SCREENSHOT_EXTENSION, new ConfigValues<string>(".png") },
@@ -18,11 +18,9 @@ public class ConfigVariables
         { ConfigTypes.SFX_PATH, new ConfigValues<string>("Audio/SFX/") },
         { ConfigTypes.RANKING_PATH, new ConfigValues<string>($"{Application.persistentDataPath}/rankings.json") },
 
-        //{ ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper") },
-        { ConfigTypes.TILESET_NAME, new ConfigValues<string>("minesweeper_stone") },
+        { ConfigTypes.TILESET_NAME, new ConfigValues<string>(TilesetsVariables.GetTileset(TilesetsTypes.STONE)) },
 
-        //{ ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
-        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell_stone") },
+        { ConfigTypes.PREFAB_CELL, new ConfigValues<string>("cell") },
         { ConfigTypes.PREFAB_SFX_AUDIO_SOURCE, new ConfigValues<string>("SFXPlayer") },
         { ConfigTypes.PREFAB_MUSIC_AUDIO_SOURCE, new ConfigValues<string>("MusicPlayer") },
 
